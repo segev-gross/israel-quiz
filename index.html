@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>חידון קצר</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            direction: rtl;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .answers button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz">
+        <div class="question" id="question"></div>
+        <div class="answers" id="answers"></div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "מהי עיר הבירה של ישראל?",
+                answers: ["חיפה", "תל אביב", "ירושלים", "אשדוד"],
+                correct: "ירושלים"
+            },
+            {
+                question: "מה צבע הדגל של ישראל?",
+                answers: ["אדום ולבן", "כחול ולבן", "ירוק ולבן", "צהוב וכחול"],
+                correct: "כחול ולבן"
+            },
+            {
+                question: "באיזה שנה קמה מדינת ישראל?",
+                answers: ['תש"ח', 'תרפ"ח', 'תרפפ"ו', 'תרי"ד'],
+                correct: 'תש"ח'
+            },
+            {
+                question: "מהי בירת הנגב?",
+                answers: ["חיפה", "אילת", "באר שבע", "תל אביב"],
+                correct: "באר שבע"
+            },
+            {
+                question: "איזה מדינה אינה גובלת בישראל?",
+                answers: ["מצרים", "ירדן", "סין", "סוריה"],
+                correct: "סין"
+            },
+            {
+                question: "איזה ים נמצא לחופי ישראל?",
+                answers: ["הים האדום", "הים השחור", "הים הצהוב", "הים הכספי"],
+                correct: "הים האדום"
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            const questionEl = document.getElementById('question');
+            const answersEl = document.getElementById('answers');
+            const resultEl = document.getElementById('result');
+            resultEl.innerText = '';
+
+            const current = quizData[currentQuestion];
+            questionEl.innerText = current.question;
+            answersEl.innerHTML = '';
+
+            current.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer;
+                button.onclick = () => checkAnswer(answer);
+                answersEl.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            const result = document.getElementById('result');
+            if (selected === quizData[currentQuestion].correct) {
+                result.innerText = "נכון מאוד!";
+                result.style.color = "green";
+                setTimeout(() => {
+                    currentQuestion++;
+                    if (currentQuestion < quizData.length) {
+                        loadQuestion();
+                    } else {
+                        document.querySelector('.quiz').innerHTML = '<h2>כל הכבוד! סיימת את החידון!</h2>';
+                    }
+                }, 1000);
+            } else {
+                result.innerText = "לא נכון, נסה שוב.";
+                result.style.color = "red";
+            }
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
+
